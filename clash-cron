@@ -1,0 +1,3 @@
+*/5 * * * * python3.6 /config/src/main.py
+0 0 * * * python3.6 /config/src/get_active_players.py
+0 0 * * * python3.6 /config/src/backup.py
