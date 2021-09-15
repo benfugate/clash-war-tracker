@@ -1,5 +1,7 @@
 # Clash War Tracker
 This is a super simple clash of clans war performance tracker.
+It started as a simple script that I ended up building on quite a bit,
+so it has turned into a little bit of a mess. But it works for what I need.
 
 I wanted to be able to track my clan members performance between wars, 
 including easily seeing how many missed attacks they had.
@@ -35,6 +37,7 @@ docker run \
     -e COC_USERNAME=<USERNAME> \
     -e COC_PASSWORD=<PASSWORD> \
     -e COC_CLAN_TAG=<CLAN_TAG> \
+    -v <WWW_FOLDER>:/var/www/html/ \
     benfugate/clashtracker:latest
 ```
 
@@ -42,7 +45,11 @@ Replace the username, password, and clan tag with your own information and with 
 
 By exposing port 80, you will be able to view the simple webpage at `localhost:80`
 
-Crontab will check for clan war updates every 5 minutes and the changes will be reflected on the webpage, or in
+If you do not mount a volume to `docker run`, the data files contained in `/var/www/html/`
+will be overwritten when the docker image is updated. The `www/` folder in this repo, can and should be
+used as the host mounting point to retain data through updates.
+
+Crontab will check for clan war updates every 5 minutes, and the changes will be reflected on the webpage, or in
 `/var/www/html/clash.json` (or `/var/www/html/current_war.json` for an active war)
 
 ### Other
