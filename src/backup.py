@@ -1,11 +1,19 @@
 import os
 import shutil
 import time
+from config import Config
 
-list_of_files = os.listdir('/clash-tracker/backups/')
-full_path = ["/clash-tracker/backups/{0}".format(x) for x in list_of_files]
+config = Config()
+
+backup_dir = f'{config.home_dir}/backups/'
+if not os.path.exists(backup_dir):
+    os.makedirs(backup_dir)
+
+
+list_of_files = os.listdir(backup_dir)
+full_path = ["{0}/{1}".format(backup_dir, x) for x in list_of_files]
 
 if len(list_of_files) >= 15:
     oldest_file = min(full_path, key=os.path.getctime)
     os.remove(oldest_file)
-shutil.copyfile('/var/www/html/clash.json', '/clash-tracker/backups/'+str(int(time.time()))+'.clash.json')
+shutil.copyfile(config.clash_json, f'{backup_dir}/{str(int(time.time()))}.clash.json')
