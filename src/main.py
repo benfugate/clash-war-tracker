@@ -6,32 +6,24 @@ import coc
 import json
 import asyncio
 import traceback
+from config import Config
 
-home_dir = os.path.split(sys.path[0])[0]
-with open(f'{home_dir}/src/config.json') as f:
-    config = json.load(f)
-username = config["COC_USERNAME"]
-password = config["COC_PASSWORD"]
-clan_tag = config["COC_CLAN_TAG"]
-clash_json = config["OUTPUT_DIR"] + "clash.json"
-current_war_json = config["OUTPUT_DIR"] + "current_war.json"
-war_log_json = config["OUTPUT_DIR"] + "wars.json"
-if config["HOME_IS_SRC"]:
-    home_dir = sys.path[0]
+config = Config()
 
 
 def main():
+
     loop = asyncio.get_event_loop()
 
-    if not (username or password or clan_tag):
+    if (config.username is None) or (config.password is None) or (config.clan_tag is None):
         raise ValueError('Missing at least one config variable')
 
-    client = coc.login(username, password)
-    war = loop.run_until_complete(client.get_current_war(clan_tag))
+    client = coc.login(config.username, config.password)
+    war = loop.run_until_complete(client.get_current_war(config.clan_tag))
     if not war:
         return
 
-    with open(war_log_json) as f:
+    with open(config.war_log_json) as f:
         opponents = json.load(f)
 
     # Decide how we should handle this run...
@@ -39,39 +31,39 @@ def main():
         # We have seen this war before
         if (opponents['clans'][-1] == war.opponent.tag) and (war.state == "inWar"):
             # Expected - This war is still ongoing
-            output_filename = current_war_json
+            output_filename = config.current_war_json
         elif (opponents['clans'][-1] == war.opponent.tag) and (war.state != "inWar"):
             # The last war has ended, and we haven't started a new war yet.
-            if os.path.exists(current_war_json):
-                os.remove(current_war_json)
+            if os.path.exists(config.current_war_json):
+                os.remove(config.current_war_json)
             else:
                 # Nothing to do, the data has been saved already
                 return
             # Expected end of war - we deleted current_war.json,
             #     run script normally and save to clash.json
-            output_filename = clash_json
+            output_filename = config.clash_json
         else:
             # Unexpected - we have fought this clan before at some point, or something is weird.
             opponents['clans'].append(war.opponent.tag)
-            output_filename = current_war_json
+            output_filename = config.current_war_json
     else:
         # We have never seen this clan before
         if war.state == "inWar":
             # In a new war
-            if os.path.exists(current_war_json):
+            if os.path.exists(config.current_war_json):
                 # War data still exists, so we need to save that before continuing
-                shutil.copyfile(current_war_json, clash_json)
-                os.remove(current_war_json)
+                shutil.copyfile(config.current_war_json, config.clash_json)
+                os.remove(config.current_war_json)
             opponents['clans'].append(war.opponent.tag)
-            output_filename = current_war_json
+            output_filename = config.current_war_json
         else:
             # Not in a war, probably preparation or no war at all
-            if os.path.exists(current_war_json):
+            if os.path.exists(config.current_war_json):
                 # War data still exists, so we need to save that before quitting
                 # This may happen if we are in a CWL. Potentially dangerous
                 #         to stats if script breaks, and data is incomplete...
-                shutil.copyfile(current_war_json, clash_json)
-                os.remove(current_war_json)
+                shutil.copyfile(config.current_war_json, config.clash_json)
+                os.remove(config.current_war_json)
             return
 
     # Build a frame to store war member data in
@@ -122,7 +114,7 @@ def main():
             war_attacks[i]
         ])
 
-    with open(clash_json) as f:
+    with open(config.clash_json) as f:
         clash = json.load(f)
 
     # Update or add to the clash json with new war info
@@ -175,14 +167,14 @@ def main():
     # Output calculated data to files
     with open(output_filename, 'w', encoding='utf-8') as f:
         json.dump(clash, f, ensure_ascii=False, indent=4)
-    with open(war_log_json, 'w', encoding='utf-8') as f:
+    with open(config.war_log_json, 'w', encoding='utf-8') as f:
         json.dump(opponents, f, ensure_ascii=False, indent=4)
 
 
 try:
     main()
 except Exception as e:
-    errors_dir = f'{home_dir}/errors/'
+    errors_dir = f'{config.home_dir}/errors/'
     if not os.path.exists(errors_dir):
         os.makedirs(errors_dir)
 
