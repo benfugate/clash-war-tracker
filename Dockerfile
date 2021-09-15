@@ -11,7 +11,7 @@ RUN chmod 0644 /etc/cron.d/clash-cron && \
     crontab /etc/cron.d/clash-cron
 
 COPY www/ /var/www/html/
-COPY src/ /clash-tracker/
-RUN mkdir -p /clash-tracker/errors/ /clash-tracker/backups/
+COPY src/ /clash-tracker/src/
+RUN mkdir -p /clash-tracker/data/errors/ /clash-tracker/data/backups/
 COPY entrypoint.sh /
 CMD ["/bin/sh", "/entrypoint.sh"]

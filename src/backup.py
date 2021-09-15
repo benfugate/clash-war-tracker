@@ -5,10 +5,9 @@ from config import Config
 
 config = Config()
 
-backup_dir = f'{config.home_dir}/backups/'
+backup_dir = f'{config.storage_folders}/backups/'
 if not os.path.exists(backup_dir):
     os.makedirs(backup_dir)
-
 
 list_of_files = os.listdir(backup_dir)
 full_path = ["{0}/{1}".format(backup_dir, x) for x in list_of_files]

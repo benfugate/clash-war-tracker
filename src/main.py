@@ -174,7 +174,7 @@ def main():
 try:
     main()
 except Exception as e:
-    errors_dir = f'{config.home_dir}/errors/'
+    errors_dir = f'{config.storage_folders}/errors/'
     if not os.path.exists(errors_dir):
         os.makedirs(errors_dir)
 
