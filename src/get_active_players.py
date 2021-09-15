@@ -1,4 +1,3 @@
-import os
 import coc
 import json
 import asyncio
