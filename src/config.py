@@ -14,6 +14,4 @@ class Config:
         self.clash_json = config["OUTPUT_DIR"] + "clash.json"
         self.current_war_json = config["OUTPUT_DIR"] + "current_war.json"
         self.war_log_json = config["OUTPUT_DIR"] + "wars.json"
-        self.home_dir = os.path.split(sys.path[0])[0]
-        if config["HOME_IS_SRC"]:
-            self.home_dir = sys.path[0]
+        self.storage_folders = os.path.split(sys.path[0])[0] + "/data"

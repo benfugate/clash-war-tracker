@@ -38,6 +38,7 @@ docker run \
     -e COC_PASSWORD=<PASSWORD> \
     -e COC_CLAN_TAG=<CLAN_TAG> \
     -v <WWW_FOLDER>:/var/www/html/ \
+    -v <ERRORS/BACKUP FOLDER>:/clash-tracker/data/ \
     benfugate/clashtracker:latest
 ```
 
@@ -45,9 +46,12 @@ Replace the username, password, and clan tag with your own information and with 
 
 By exposing port 80, you will be able to view the simple webpage at `localhost:80`
 
-If you do not mount a volume to `docker run`, the data files contained in `/var/www/html/`
+If you do not mount a `<WWW_FOLDER>`volume to `docker run`, the data files contained in `/var/www/html/`
 will be overwritten when the docker image is updated. The `www/` folder in this repo, can and should be
 used as the host mounting point to retain data through updates.
+
+Same thing goes for the `<ERRORS/BACKUP FOLDER>` volume. You can remove it if you aren't worried about retaining
+any of your previous war data in case of a failure, or error output files.
 
 Crontab will check for clan war updates every 5 minutes, and the changes will be reflected on the webpage, or in
 `/var/www/html/clash.json` (or `/var/www/html/current_war.json` for an active war)
@@ -55,8 +59,8 @@ Crontab will check for clan war updates every 5 minutes, and the changes will be
 ### Other
 
 If you just want to use the python script, you will want to update `config.json`
-with your api login and clan information. Do not touch the `OUTPUT_DIR` or `HOME_IS_SRC`
-variables unless you know what you're changing.
+with your api login and clan information. Do not touch the `OUTPUT_DIR`
+variable unless you know what you're changing.
 
 Then you can just run `python3 main.py` and it will output the results to the `www/` directory.
 
