@@ -2,6 +2,6 @@
     "COC_USERNAME": null,
     "COC_PASSWORD": null,
     "COC_CLAN_TAG": null,
-    "OUTPUT_DIR": "",
+    "OUTPUT_DIR": "www/",
     "HOME_IS_SRC": false
 }

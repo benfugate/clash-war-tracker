@@ -48,18 +48,22 @@ Crontab will check for clan war updates every 5 minutes and the changes will be 
 ### Other
 
 If you just want to use the python script, you will want to update `config.json`
-with your api login and clan information.
+with your api login and clan information. Do not touch the `OUTPUT_DIR` or `HOME_IS_SRC`
+variables unless you know what you're changing.
 
-You may also need to create a `errors/` and a `backups/` directory
+Then you can just run `python3 main.py` and it will output the results to the `www/` directory.
 
-Then you can just run `main.py` with python3 and it will output the results to the same directory.
-
-A crontab will have to be set up if you want to automate the script.
+A crontab will have to be set up if you want to automate the scripts.
 
 ## Notes
 
 The docker container will backup the clash.json every day at midnight to 
 `/clash-tracker/backups`, mainly just in case I break something in the code.
+
+Also at midnight, a helper script `get_active_players.py` will run. This script gets the list of players
+currently in the clan, and will mark any players you have been tracking as not in the clan in the `clash.json`
+They will also no longer appear on the webpage view, but the data will persist in case they rejoin in which the
+flag wull be updated.
 
 If `main.py` fails to run due to an error, the errors get output to `/clash-tracker/errors`
 which can help diagnose what's going wrong.
