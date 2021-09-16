@@ -59,8 +59,8 @@ Crontab will check for clan war updates every 5 minutes, and the changes will be
 ### Other
 
 If you just want to use the python script, you will want to update `config.json`
-with your api login and clan information. Do not touch the `OUTPUT_DIR`
-variable unless you know what you're changing.
+with your api login and clan information. You do not need to modify the `DOCKER` variable, this is set automatically
+if `docker run` is used.
 
 Then you can just run `python3 main.py` and it will output the results to the `www/` directory.
 
