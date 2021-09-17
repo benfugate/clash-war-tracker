@@ -163,8 +163,10 @@ def main():
             destruction_score = clash[tag]["average_destruction"] / 100
             activity_score = 1 - (clash[tag]["misses"] / clash[tag]["total"])
             clash[tag]["player_score"] = round(((star_score + destruction_score + activity_score) / 3) * 100, 2)
+        else:
+            clash[tag]["player_score"] = 0
 
-    # Output calculated data to files
+            # Output calculated data to files
     with open(output_filename, 'w', encoding='utf-8') as f:
         json.dump(clash, f, ensure_ascii=False, indent=4)
     with open(config.war_log_json, 'w', encoding='utf-8') as f:
