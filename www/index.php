@@ -18,18 +18,18 @@
         });
         echo '<table cellpadding="1" cellspacing="1" border="1">';
         echo '<td>' . 'Name' . '</td>';
-        echo '<td>' . 'Misses' . '</td>';
-        echo '<td>' . 'Total' . '</td>';
+        #echo '<td>' . 'Misses' . '</td>';
+        #echo '<td>' . 'Total' . '</td>';
         echo '<td>' . 'Percentage Missed' . '</td>';
         echo '<td>' . 'Average Stars' . '</td>';
-        echo '<td>' . 'Score' . '</td>';
+        echo '<td>' . 'Rating Score' . '</td>';
         echo '</tr>';
         foreach($array as $key => $item) {
             if ($item['in_clan']) {
                 echo '<tr>';
                     echo '<td>' . $item['name'] . '</td>';
-                    echo '<td>' . $item['misses'] . '</td>';
-                    echo '<td>' . $item['total'] . '</td>';
+                    #echo '<td>' . $item['misses'] . '</td>';
+                    #echo '<td>' . $item['total'] . '</td>';
                     echo '<td>' . round(($item['misses']/$item['total'])*100) . '%</td>';
                     echo '<td>' . $item['average_stars'] . '</td>';
                     echo '<td>' . $item['player_score'] . '</td>';
