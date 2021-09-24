@@ -9,16 +9,9 @@
             $filename = "/clash-tracker/data/json/current_war.json";
             print_r("This page includes an onging war. Data may be incomplete.");
         }
-        else if (file_exists("/clash-tracker/data/json/clash.json")){
+        else {
             $filename = "/clash-tracker/data/json/clash.json";
         }
-        #else {
-        #    $path = explode(DIRECTORY_SEPARATOR, dirname(__FILE__));
-        #    $base_path = $path[0:len]
-        #    if (file_exists("/clash-tracker/data/json/current_war.json")) {
-        #        $path
-        #    }
-        #}
         $array = json_decode(file_get_contents($filename), true);
         usort($array, function ($a, $b) {
             return strcmp(strtolower($a["name"]), strtolower($b["name"]));
@@ -44,6 +37,7 @@
             }
         }
         echo '</table>';
+        $filename = basename($filename)
         echo "$filename was last updated: " . date ("F d Y H:i:s.", filemtime($filename));
     ?>
     </center>

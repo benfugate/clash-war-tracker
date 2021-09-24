@@ -12,9 +12,9 @@ class Config:
         self.password = config["COC_PASSWORD"]
         self.clan_tag = config["COC_CLAN_TAG"]
         self.storage_folders = f"{os.path.split(sys.path[0])[0]}/data/"
-        output_path = f"{os.path.split(sys.path[0])[0]}/www/"
+        output_path = f"{os.path.split(sys.path[0])[0]}/data/json/"
         if config["DOCKER"]:
-            output_path = "/var/www/html/"
-        self.clash_json = f"{self.storage_folders}/json/clash.json"
-        self.current_war_json = f"{self.storage_folders}/json/current_war.json"
+            output_path = "/clash-tracker/data/json"
+        self.clash_json = f"{output_path}/clash.json"
+        self.current_war_json = f"{output_path}/current_war.json"
         self.war_log_json = f"{output_path}/wars.json"
