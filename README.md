@@ -22,7 +22,7 @@ You will also need a free clash of clans API account from https://developer.clas
 ## Building
 I have this built into a docker container. You can build it yourself using
 
-`docker build -t clash-tracker .`
+`docker build -t clashtracker .`
 
 within this root directory to build your own image, or you can pull my docker image
 
@@ -37,8 +37,7 @@ docker run \
     -e COC_USERNAME=<USERNAME> \
     -e COC_PASSWORD=<PASSWORD> \
     -e COC_CLAN_TAG=<CLAN_TAG> \
-    -v <WWW_FOLDER>:/var/www/html/ \
-    -v <ERRORS/BACKUP FOLDER>:/clash-tracker/data/ \
+    -v <DATA FOLDER>:/clash-tracker/data/ \
     benfugate/clashtracker:latest
 ```
 
@@ -46,12 +45,9 @@ Replace the username, password, and clan tag with your own information and with 
 
 By exposing port 80, you will be able to view the simple webpage at `localhost:80`
 
-If you do not mount a `<WWW_FOLDER>`volume to `docker run`, the data files contained in `/var/www/html/`
-will be overwritten when the docker image is updated. The `www/` folder in this repo, can and should be
-used as the host mounting point to retain data through updates.
-
-Same thing goes for the `<ERRORS/BACKUP FOLDER>` volume. You can remove it if you aren't worried about retaining
-any of your previous war data in case of a failure, or error output files.
+If you do not mount a `<DATA_FOLDER>` volume to `docker run`, the data files contained in `/clash-tracker/data/`
+will be overwritten when the docker image is updated. The `data/` folder in this repo can and should be
+used as a template for the host mounting point to retain data through updates.
 
 Crontab will check for clan war updates every 5 minutes, and the changes will be reflected on the webpage, or in
 `/var/www/html/clash.json` (or `/var/www/html/current_war.json` for an active war)

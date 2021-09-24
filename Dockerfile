@@ -12,6 +12,7 @@ RUN chmod 0644 /etc/cron.d/clash-cron && \
 
 COPY www/ /var/www/html/
 COPY src/ /clash-tracker/src/
+COPY data/ /clash-tracker/data/
 RUN mkdir -p /clash-tracker/data/errors/ /clash-tracker/data/backups/
 COPY entrypoint.sh /
 CMD ["/bin/sh", "/entrypoint.sh"]
