@@ -37,8 +37,7 @@
             }
         }
         echo '</table>';
-        $filename = basename($filename);
-        echo "$filename was last updated: " . date ("F d Y H:i:s.", filemtime($filename));
+        echo basename($filename) . " was last updated: " . date ("F d Y H:i:s.", filemtime($filename));
     ?>
     </center>
 </body>
