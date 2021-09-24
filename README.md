@@ -50,7 +50,7 @@ will be overwritten when the docker image is updated. The `data/` folder in this
 used as a template for the host mounting point to retain data through updates.
 
 Crontab will check for clan war updates every 5 minutes, and the changes will be reflected on the webpage, or in
-`/var/www/html/clash.json` (or `/var/www/html/current_war.json` for an active war)
+`/clash-tracker/data/json/clash.json` (or `/clash-tracker/data/json/current_war.json` for an active war)
 
 ### Other
 
@@ -58,19 +58,19 @@ If you just want to use the python script, you will want to update `config.json`
 with your api login and clan information. You do not need to modify the `DOCKER` variable, this is set automatically
 if `docker run` is used.
 
-Then you can just run `python3 main.py` and it will output the results to the `www/` directory.
+Then you can just run `python3 main.py` and it will output the results to the `data/json/` directory.
 
 A crontab will have to be set up if you want to automate the scripts.
 
 ## Notes
 
 The docker container will backup the clash.json every day at midnight to 
-`/clash-tracker/backups`, mainly just in case I break something in the code.
+`/clash-tracker/data/backups`, mainly just in case I break something in the code.
 
 Also at midnight, a helper script `get_active_players.py` will run. This script gets the list of players
 currently in the clan, and will mark any players you have been tracking as not in the clan in the `clash.json`
 They will also no longer appear on the webpage view, but the data will persist in case they rejoin in which the
 flag wull be updated.
 
-If `main.py` fails to run due to an error, the errors get output to `/clash-tracker/errors`
+If `main.py` fails to run due to an error, the errors get output to `/clash-tracker/data/errors`
 which can help diagnose what's going wrong.
