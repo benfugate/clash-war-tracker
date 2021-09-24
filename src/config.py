@@ -15,6 +15,6 @@ class Config:
         output_path = f"{os.path.split(sys.path[0])[0]}/www/"
         if config["DOCKER"]:
             output_path = "/var/www/html/"
-        self.clash_json = f"{output_path}/clash.json"
-        self.current_war_json = f"{output_path}/current_war.json"
+        self.clash_json = f"{self.storage_folders}/json/clash.json"
+        self.current_war_json = f"{self.storage_folders}/json/current_war.json"
         self.war_log_json = f"{output_path}/wars.json"

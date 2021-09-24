@@ -125,6 +125,8 @@ def main():
             clash[tag]["misses"] += final_list[i][2]
             clash[tag]["total"] += 2
             if final_list[i][3]:
+                if "wars" not in clash[tag]:
+                    clash[tag]["wars"] = []
                 clash[tag]["wars"].append(final_list[i][3])
             clash[tag]["in_clan"] = True
         else:

@@ -1,17 +1,24 @@
-<html> 
+<html>
 <head>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <center>
     <?php
-        if (file_exists("current_war.json")) {
-            $filename = "current_war.json";
+        if (file_exists("/clash-tracker/data/json/current_war.json")) {
+            $filename = "/clash-tracker/data/json/current_war.json";
             print_r("This page includes an onging war. Data may be incomplete.");
         }
-        else {
-            $filename = "clash.json";
+        else if (file_exists("/clash-tracker/data/json/clash.json")){
+            $filename = "/clash-tracker/data/json/clash.json";
         }
+        #else {
+        #    $path = explode(DIRECTORY_SEPARATOR, dirname(__FILE__));
+        #    $base_path = $path[0:len]
+        #    if (file_exists("/clash-tracker/data/json/current_war.json")) {
+        #        $path
+        #    }
+        #}
         $array = json_decode(file_get_contents($filename), true);
         usort($array, function ($a, $b) {
             return strcmp(strtolower($a["name"]), strtolower($b["name"]));
