@@ -18,3 +18,4 @@ class Config:
         self.clash_json = f"{output_path}/clash.json"
         self.current_war_json = f"{output_path}/current_war.json"
         self.war_log_json = f"{output_path}/wars.json"
+        self.war_filter = 5260000
