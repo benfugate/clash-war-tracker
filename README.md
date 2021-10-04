@@ -68,9 +68,13 @@ The docker container will backup the clash.json every day at midnight to
 `/clash-tracker/data/backups`, mainly just in case I break something in the code.
 
 Also at midnight, a helper script `get_active_players.py` will run. This script gets the list of players
-currently in the clan, and will mark any players you have been tracking as not in the clan in the `clash.json`
+currently in the clan, and will mark any players you have been tracking as not in the clan in the `clash.json`.
 They will also no longer appear on the webpage view, but the data will persist in case they rejoin in which the
-flag wull be updated.
+flag will be updated. This script will also update clash.json to reflect the players current town hall and trophy numbers.
+
+By default, the config.json will have a value `WAR_FILTER_SECONDS`. This value will be used
+to filter out old war attack information. Any attack that is older than this value in seconds (1 month by default)
+will no longer be considered when creating player evaluation variables.
 
 If `main.py` fails to run due to an error, the errors get output to `/clash-tracker/data/errors`
 which can help diagnose what's going wrong.
