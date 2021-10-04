@@ -67,31 +67,25 @@ def main():
             return
 
     # Build a frame to store war member data in
-    war_members_names = []
-    war_members_tags = []
-    war_members_ths = []
-    war_attacks_missed = []
-    war_attacks = []
+    war_info = {}
     for member in war.clan.members:
-        war_members_names.append(member.name)
-        war_members_tags.append(member.tag)
-        war_members_ths.append(member.town_hall)
-        war_attacks_missed.append(2)
-        war_attacks.append(
-            {
+        war_player = {
+            "name": member.name.replace(" ", "_"), "tag": member.tag,
+            "town_hall": member.town_hall, "missed_attacks": 2,
+            "attack_info": {
                 "attacks": {
                     "first_attack": {"stars": None, "destruction": None},
                     "second_attack": {"stars": None, "destruction": None}
                 },
                 "timestamp": int(time.time())
-            }
-        )
+            }}
+        war_info[member.tag] = war_player
 
     # Look through war attacks and fill out any used attacks
     for attack in war.attacks:
-        if str(attack.attacker_tag) in war_members_tags:
-            war_attacks_missed[war_members_tags.index(str(attack.attacker_tag))] -= 1
-            attacks = war_attacks[war_members_tags.index(str(attack.attacker_tag))]["attacks"]
+        if attack.attacker_tag in war_info:
+            war_info[attack.attacker_tag]["missed_attacks"] -= 1
+            attacks = war_info[attack.attacker_tag]["attacks"]
             if attacks["first_attack"]["stars"] is None:
                 attacks["first_attack"]["stars"] = attack.stars
                 attacks["first_attack"]["destruction"] = attack.destruction
@@ -100,50 +94,39 @@ def main():
                 attacks["second_attack"]["destruction"] = attack.destruction
 
     # If war attacks were blank, remove them from the json
-    for i in range(len(war_attacks)):
-        if war_attacks[i]["attacks"]["first_attack"]["stars"] is None:
-            war_attacks[i] = None
-        elif war_attacks[i]["attacks"]["second_attack"]["stars"] is None:
-            del war_attacks[i]["attacks"]["second_attack"]
-
-    # Clean up all those separate lists by combining into one master list
-    final_list = []
-    for i in range(len(war_members_names)):
-        final_list.append([
-            war_members_tags[i],
-            war_members_names[i].replace(" ", "_"),
-            war_attacks_missed[i],
-            war_attacks[i],
-            war_members_ths[i]
-        ])
+    for tag in war_info:
+        if war_info[tag]["attack_info"]["attacks"]["first_attack"]["stars"] is None:
+            war_info[tag]["attack_info"]["attacks"] = None
+        elif war_info[tag]["attack_info"]["attacks"]["second_attack"]["stars"] is None:
+            del war_info[tag]["attack_info"]["attacks"]["second_attack"]
 
     with open(config.clash_json) as f:
         clash = json.load(f)
 
     # Update or add to the clash json with new war info
-    for i in range(len(final_list)):
-        if final_list[i][0] in clash:
-            tag = final_list[i][0]
-            clash[tag]["name"] = final_list[i][1]
-            clash[tag]["misses"] += final_list[i][2]
+    for tag in war_info:
+        if war_info[tag]["tag"] in clash:
+            tag = war_info[tag]["tag"]
+            clash[tag]["name"] = war_info[tag]["name"]
+            clash[tag]["misses"] += war_info[tag]["missed_attacks"]
             clash[tag]["total"] += 2
-            if final_list[i][3]:
+            if war_info[tag]["attack_info"]["attacks"]:
                 if "wars" not in clash[tag]:
                     clash[tag]["wars"] = []
-                clash[tag]["wars"].append(final_list[i][3])
+                clash[tag]["wars"].append(war_info[tag]["attack_info"])
             clash[tag]["in_clan"] = True
-            clash[tag]["town_hall"] = final_list[i][4]
+            clash[tag]["town_hall"] = war_info[tag]["town_hall"]
         else:
-            tag = final_list[i][0]
+            tag = war_info[tag]["tag"]
             clash[tag] = {}
-            clash[tag]["name"] = final_list[i][1]
-            clash[tag]["misses"] = final_list[i][2]
+            clash[tag]["name"] = war_info[tag]["name"]
+            clash[tag]["misses"] = war_info[tag]["missed_attacks"]
             clash[tag]["total"] = 2
             clash[tag]["war_battles"] = []
-            if final_list[i][3]:
-                clash[tag]["wars"] = [final_list[i][3]]
+            if war_info[tag]["tag"]["attacks"]:
+                clash[tag]["wars"] = [war_info[tag]["attack_info"]]
             clash[tag]["in_clan"] = True
-            clash[tag]["town_hall"] = final_list[i][4]
+            clash[tag]["town_hall"] = war_info[tag]["town_hall"]
         if war.is_cwl:
             clash[tag]["total"] -= 1
             clash[tag]["misses"] -= 1
@@ -181,7 +164,8 @@ def main():
 
         if time_filtered_attacks != 0:
             clash[tag]["time_filtered_average_stars"] = round(time_filtered_total_stars / time_filtered_attacks, 2)
-            clash[tag]["time_filtered_average_destruction"] = round(time_filtered_total_destruction / time_filtered_attacks, 2)
+            clash[tag]["time_filtered_average_destruction"] = round(
+                time_filtered_total_destruction / time_filtered_attacks, 2)
         else:
             clash[tag]["time_filtered_average_stars"] = None
             clash[tag]["time_filtered_average_destruction"] = None
