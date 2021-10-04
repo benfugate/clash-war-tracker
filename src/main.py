@@ -153,7 +153,6 @@ def main():
         total_stars, total_destruction, attacks = 0, 0, 0
         time_filtered_total_stars, time_filtered_total_destruction, time_filtered_attacks = 0, 0, 0
 
-        attacks = 0
         if "wars" in clash[tag]:
             for war in clash[tag]["wars"]:
                 for attack in war["attacks"]:
