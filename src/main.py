@@ -18,8 +18,12 @@ def main():
     if (config.username is None) or (config.password is None) or (config.clan_tag is None):
         raise ValueError('Missing at least one config variable')
 
-    client = coc.login(config.username, config.password)
-    war = loop.run_until_complete(client.get_current_war(config.clan_tag))
+    try:
+        client = coc.login(config.username, config.password)
+        war = loop.run_until_complete(client.get_current_war(config.clan_tag))
+    except Exception as e:
+        print(f"API Error: {e}")
+        return
     if not war:
         return
 
