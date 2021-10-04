@@ -24,9 +24,9 @@
         echo '</tr>';
         foreach($array as $key => $item) {
             if ($item['in_clan']) {
-                if ($item['time_filtered_average_stars'])
+                if (!is_null($item['time_filtered_average_stars']))
                     $average_stars = $item['time_filtered_average_stars'];
-                elseif ($item['average_stars'])
+                elseif (!is_null($item['average_stars']))
                     $average_stars = $item['average_stars'] . "*";
                 else
                     $average_stars = "";
