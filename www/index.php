@@ -9,9 +9,8 @@
             $filename = "/clash-tracker/data/json/current_war.json";
             print_r("This page includes an onging war. Data may be incomplete.");
         }
-        else {
+        else
             $filename = "/clash-tracker/data/json/clash.json";
-        }
         $array = json_decode(file_get_contents($filename), true);
         uasort($array, fn($a, $b) =>
             [$b['town_hall'], $b['trophies']] <=> [$a['town_hall'], $a['trophies']]
@@ -26,12 +25,17 @@
         echo '</tr>';
         foreach($array as $key => $item) {
             if ($item['in_clan']) {
+                if ($item['time_filtered_average_stars'])
+                    $average_stars = $item['time_filtered_average_stars'];
+                else
+                    $average_stars = $item['average_stars'];
+
                 echo '<tr>';
                     echo '<td>' . $item['name'] . '</td>';
                     #echo '<td>' . $item['misses'] . '</td>';
                     #echo '<td>' . $item['total'] . '</td>';
                     echo '<td>' . round(($item['misses']/$item['total'])*100) . '%</td>';
-                    echo '<td>' . $item['time_filtered_average_stars'] . '</td>';
+                    echo '<td>' . $average_stars . '</td>';
                     echo '<td>' . $item['player_score'] . '</td>';
                 echo '</tr>';
             }

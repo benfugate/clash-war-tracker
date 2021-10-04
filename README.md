@@ -76,5 +76,8 @@ By default, the config.json will have a value `WAR_FILTER_SECONDS`. This value w
 to filter out old war attack information. Any attack that is older than this value in seconds (1 month by default)
 will no longer be considered when creating player evaluation variables.
 
+If a player does not have any attacks in the filter period, then their lifetime average stars and score will be
+displayed instead
+
 If `main.py` fails to run due to an error, the errors get output to `/clash-tracker/data/errors`
 which can help diagnose what's going wrong.
