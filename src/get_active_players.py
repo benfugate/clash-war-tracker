@@ -20,6 +20,9 @@ for member in clash:
     clash[member]['in_clan'] = False
 for member in members:
     if member.tag in clash:
+        if 'town_hall' not in clash[member.tag]:
+            player = loop.run_until_complete(client.get_player(member.tag))
+            clash[member.tag]['town_hall'] = player.town_hall
         clash[member.tag]['in_clan'] = True
         clash[member.tag]['trophies'] = member.trophies
 
