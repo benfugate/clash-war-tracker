@@ -178,8 +178,6 @@ def main():
             destruction_score = clash[tag]["time_filtered_average_destruction"] / 100
             activity_score = 1 - (clash[tag]["misses"] / clash[tag]["total"])
             clash[tag]["player_score"] = round(((star_score + destruction_score + activity_score) / 3) * 100, 2)
-        else:
-            clash[tag]["player_score"] = None
 
     # Output calculated data to files
     with open(output_filename, 'w', encoding='utf-8') as f:
