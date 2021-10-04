@@ -85,7 +85,7 @@ def main():
     for attack in war.attacks:
         if attack.attacker_tag in war_info:
             war_info[attack.attacker_tag]["missed_attacks"] -= 1
-            attacks = war_info[attack.attacker_tag]["attacks"]
+            attacks = war_info[attack.attacker_tag]["attack_info"]["attacks"]
             if attacks["first_attack"]["stars"] is None:
                 attacks["first_attack"]["stars"] = attack.stars
                 attacks["first_attack"]["destruction"] = attack.destruction
