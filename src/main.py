@@ -69,11 +69,13 @@ def main():
     # Build a frame to store war member data in
     war_members_names = []
     war_members_tags = []
+    war_members_ths = []
     war_attacks_missed = []
     war_attacks = []
     for member in war.clan.members:
         war_members_names.append(member.name)
         war_members_tags.append(member.tag)
+        war_members_ths.append(member.town_hall)
         war_attacks_missed.append(2)
         war_attacks.append(
             {
@@ -111,7 +113,8 @@ def main():
             war_members_tags[i],
             war_members_names[i].replace(" ", "_"),
             war_attacks_missed[i],
-            war_attacks[i]
+            war_attacks[i],
+            war_members_ths[i]
         ])
 
     with open(config.clash_json) as f:
@@ -129,6 +132,7 @@ def main():
                     clash[tag]["wars"] = []
                 clash[tag]["wars"].append(final_list[i][3])
             clash[tag]["in_clan"] = True
+            clash[tag]["town_hall"] = final_list[i][4]
         else:
             tag = final_list[i][0]
             clash[tag] = {}
@@ -139,22 +143,29 @@ def main():
             if final_list[i][3]:
                 clash[tag]["wars"] = [final_list[i][3]]
             clash[tag]["in_clan"] = True
+            clash[tag]["town_hall"] = final_list[i][4]
         if war.is_cwl:
             clash[tag]["total"] -= 1
             clash[tag]["misses"] -= 1
 
     # Calculate some player statistics from the numbers we have gathered
     for tag in clash:
-        total_stars = 0
-        total_destruction = 0
+        total_stars, total_destruction, attacks = 0, 0, 0
+        time_filtered_total_stars, time_filtered_total_destruction, time_filtered_attacks = 0, 0, 0
+
         attacks = 0
         if "wars" in clash[tag]:
             for war in clash[tag]["wars"]:
+                for attack in war["attacks"]:
+                    total_stars += war["attacks"][attack]["stars"]
+                    total_destruction += war["attacks"][attack]["destruction"]
+                    attacks += 1
                 if war['timestamp'] > int(time.time()) - config.war_filter:
                     for attack in war["attacks"]:
-                        total_stars += war["attacks"][attack]["stars"]
-                        total_destruction += war["attacks"][attack]["destruction"]
-                        attacks += 1
+                        time_filtered_total_stars += war["attacks"][attack]["stars"]
+                        time_filtered_total_destruction += war["attacks"][attack]["destruction"]
+                        time_filtered_attacks += 1
+
         if attacks != 0:
             clash[tag]["average_stars"] = round(total_stars / attacks, 2)
             clash[tag]["average_destruction"] = round(total_destruction / attacks, 2)
@@ -169,7 +180,21 @@ def main():
         else:
             clash[tag]["player_score"] = 0
 
-            # Output calculated data to files
+        if time_filtered_attacks != 0:
+            clash[tag]["time_filtered_average_stars"] = round(time_filtered_total_stars / time_filtered_attacks, 2)
+            clash[tag]["time_filtered_average_destruction"] = round(time_filtered_total_destruction / time_filtered_attacks, 2)
+        else:
+            clash[tag]["time_filtered_average_stars"] = None
+            clash[tag]["time_filtered_average_destruction"] = None
+        if clash[tag]["time_filtered_average_stars"]:
+            star_score = clash[tag]["time_filtered_average_stars"] / 3
+            destruction_score = clash[tag]["time_filtered_average_destruction"] / 100
+            activity_score = 1 - (clash[tag]["misses"] / clash[tag]["total"])
+            clash[tag]["player_score"] = round(((star_score + destruction_score + activity_score) / 3) * 100, 2)
+        else:
+            clash[tag]["player_score"] = None
+
+    # Output calculated data to files
     with open(output_filename, 'w', encoding='utf-8') as f:
         json.dump(clash, f, ensure_ascii=False, indent=4)
     with open(config.war_log_json, 'w', encoding='utf-8') as f:

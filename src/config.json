@@ -2,5 +2,6 @@
     "COC_USERNAME": null,
     "COC_PASSWORD": null,
     "COC_CLAN_TAG": null,
+    "WAR_FILTER_SECONDS": 2592000,
     "DOCKER": false
 }
