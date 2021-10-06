@@ -26,8 +26,10 @@
             if ($item['in_clan']) {
                 if (!is_null($item['time_filtered_average_stars']))
                     $average_stars = $item['time_filtered_average_stars'];
+                    $player_score = $item['player_score'];
                 elseif (!is_null($item['average_stars']))
                     $average_stars = $item['average_stars'] . "*";
+                    $player_score = $item['player_score'] . "*";
                 else
                     $average_stars = "";
 
@@ -41,7 +43,7 @@
             }
         }
         echo '</table>';
-        echo "* filtered average stars data is empty, using player lifetime value<br>";
+        echo "* filtered data is empty, using player lifetime values<br>";
         echo basename($filename) . " was last updated: " . date ("F d Y H:i:s.", filemtime($filename));
     ?>
     </center>
