@@ -24,24 +24,27 @@
         echo '</tr>';
         foreach($array as $key => $item) {
             if ($item['in_clan']) {
+
+                $player_score = $item['player_score'];
+                $average_stars = "";
                 if (!is_null($item['time_filtered_average_stars']))
                     $average_stars = $item['time_filtered_average_stars'];
-                elseif (!is_null($item['average_stars']))
+                elseif (!is_null($item['average_stars'])) {
                     $average_stars = $item['average_stars'] . "*";
-                else
-                    $average_stars = "";
+                    $player_score = $player_score . "*";
+                }
 
                 echo '<tr>';
                     echo '<td>' . $item['town_hall'] . '</td>';
                     echo '<td>' . $item['name'] . '</td>';
                     echo '<td>' . round(($item['misses']/$item['total'])*100) . '%</td>';
                     echo '<td>' . $average_stars . '</td>';
-                    echo '<td>' . $item['player_score'] . '</td>';
+                    echo '<td>' . $player_score . '</td>';
                 echo '</tr>';
             }
         }
         echo '</table>';
-        echo "* filtered average stars data is empty, using player lifetime value<br>";
+        echo "* filtered data is empty, using player lifetime values<br>";
         echo basename($filename) . " was last updated: " . date ("F d Y H:i:s.", filemtime($filename));
     ?>
     </center>
