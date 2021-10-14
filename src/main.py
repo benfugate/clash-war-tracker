@@ -114,9 +114,9 @@ def main():
             clash[tag]["name"] = war_info[tag]["name"]
             clash[tag]["misses"] += war_info[tag]["missed_attacks"]
             clash[tag]["total"] += 2
+            if "wars" not in clash[tag]:
+                clash[tag]["wars"] = []
             if war_info[tag]["attack_info"]["attacks"]:
-                if "wars" not in clash[tag]:
-                    clash[tag]["wars"] = []
                 clash[tag]["wars"].append(war_info[tag]["attack_info"])
             clash[tag]["in_clan"] = True
             clash[tag]["town_hall"] = war_info[tag]["town_hall"]
@@ -126,8 +126,8 @@ def main():
             clash[tag]["name"] = war_info[tag]["name"]
             clash[tag]["misses"] = war_info[tag]["missed_attacks"]
             clash[tag]["total"] = 2
-            clash[tag]["war_battles"] = []
-            if war_info[tag]["tag"]["attacks"]:
+            clash[tag]["wars"] = []
+            if war_info[tag]["attack_info"]["attacks"]:
                 clash[tag]["wars"] = [war_info[tag]["attack_info"]]
             clash[tag]["in_clan"] = True
             clash[tag]["town_hall"] = war_info[tag]["town_hall"]
@@ -142,15 +142,16 @@ def main():
 
         if "wars" in clash[tag]:
             for war in clash[tag]["wars"]:
-                for attack in war["attacks"]:
-                    total_stars += war["attacks"][attack]["stars"]
-                    total_destruction += war["attacks"][attack]["destruction"]
-                    attacks += 1
-                if war['timestamp'] > int(time.time()) - config.war_filter:
+                if "attacks" in war:
                     for attack in war["attacks"]:
-                        time_filtered_total_stars += war["attacks"][attack]["stars"]
-                        time_filtered_total_destruction += war["attacks"][attack]["destruction"]
-                        time_filtered_attacks += 1
+                        total_stars += war["attacks"][attack]["stars"]
+                        total_destruction += war["attacks"][attack]["destruction"]
+                        attacks += 1
+                    if war['timestamp'] > int(time.time()) - config.war_filter:
+                        for attack in war["attacks"]:
+                            time_filtered_total_stars += war["attacks"][attack]["stars"]
+                            time_filtered_total_destruction += war["attacks"][attack]["destruction"]
+                            time_filtered_attacks += 1
 
         if attacks != 0:
             clash[tag]["average_stars"] = round(total_stars / attacks, 2)
