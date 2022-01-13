@@ -16,6 +16,7 @@ class Config:
         if config["DOCKER"]:
             output_path = "/clash-tracker/data/json"
         self.clash_json = f"{output_path}/clash.json"
+        self.war_picks = f"{output_path}/war_picks.json"
         self.current_war_json = f"{output_path}/current_war.json"
         self.war_log_json = f"{output_path}/wars.json"
         self.war_filter = config["WAR_FILTER_SECONDS"]

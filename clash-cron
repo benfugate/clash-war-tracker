@@ -1,3 +1,4 @@
 */5 * * * * /usr/bin/python3 /clash-tracker/src/main.py
 0 0 * * * /usr/bin/python3 /clash-tracker/src/get_active_players.py
+0 0 * * * /usr/bin/python3 /clash-tracker/src/pick_war_players.py
 0 0 * * * /usr/bin/python3 /clash-tracker/src/backup.py
