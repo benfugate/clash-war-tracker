@@ -30,6 +30,7 @@ def main():
                 war_picks[member.tag] = {
                     "name": member.name,
                     "player_score": -1,
+                    "trophies": member.trophies,
                     "town_hall": player.town_hall
                 }
 
