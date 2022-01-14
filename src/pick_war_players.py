@@ -23,21 +23,31 @@ def main():
     war_picks = {}
     clan = loop.run_until_complete(client.get_clan(config.clan_tag))
     members = clan.members
+    current_member_tags = [member.tag for member in members]
     for member in members:
+        player = loop.run_until_complete(client.get_player(member.tag))
         if member.tag not in clash:
-            player = loop.run_until_complete(client.get_player(member.tag))
             if player.war_opted_in:
                 war_picks[member.tag] = {
                     "name": member.name,
                     "player_score": -1,
                     "trophies": member.trophies,
-                    "town_hall": player.town_hall
+                    "town_hall": player.town_hall,
+                    "league": str(member.league)
                 }
+        else:
+            clash[member.tag]["league"] = str(member.league)
+            clash[member.tag]["opt_in"] = player.war_opted_in
 
     for tag in clash:
-        if clash[tag]["in_clan"]:
+        if tag in current_member_tags:
             miss_percentage = (clash[tag]["misses"] / clash[tag]["total"]) * 100
-            if miss_percentage == 100 and clash[tag]["total"] > 3:
+
+            if not clash[tag]["opt_in"]:
+                continue
+            elif miss_percentage == 100 and clash[tag]["total"] > 4:
+                continue
+            elif clash[tag]["league"] == "Unranked":
                 continue
 
             most_recent_war = 0
@@ -50,14 +60,6 @@ def main():
                 no_recent_war = True
 
             if miss_percentage < 50 or no_recent_war:
-                try:
-                    player = loop.run_until_complete(client.get_player(tag))
-                    if not player.war_opted_in:
-                        continue
-                except Exception as e:
-                    print(f"API Error: {e}")
-                    return
-
                 war_picks[tag] = clash[tag]
 
     clash = war_picks
