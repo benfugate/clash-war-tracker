@@ -88,3 +88,8 @@ displayed instead
 
 If `main.py` fails to run due to an error, the errors get output to `/clash-tracker/data/errors`
 which can help diagnose what's going wrong.
+
+## Example
+https://clash.fugate.co
+
+![Screenshot 2022-01-14 161516](https://user-images.githubusercontent.com/51164115/149586197-7ae12130-932e-4651-b725-823d38bd3971.png)
