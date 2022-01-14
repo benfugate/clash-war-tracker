@@ -69,7 +69,10 @@ def main():
         for tag in clash:
             if clash[tag]["player_score"] == -1:
                 continue
-            if clash[tag]["most_recent_war"] > most_recent_attack:
+            if (clash[tag]["misses"] / clash[tag]["total"]) * 100 > 70:
+                most_recent_player = tag
+                break
+            elif clash[tag]["most_recent_war"] > most_recent_attack:
                 most_recent_attack = clash[tag]["most_recent_war"]
                 most_recent_player = tag
             elif clash[tag]["most_recent_war"] == most_recent_attack:
