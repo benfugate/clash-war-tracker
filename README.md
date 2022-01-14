@@ -52,7 +52,7 @@ used as a template for the host mounting point to retain data through updates.
 Crontab will check for clan war updates every 5 minutes, and the changes will be reflected on the webpage, or in
 `/clash-tracker/data/json/clash.json` (or `/clash-tracker/data/json/current_war.json` for an active war)
 
-### Other
+## Other
 
 If you just want to use the python script, you will want to update `config.json`
 with your api login and clan information. You do not need to modify the `DOCKER` variable, this is set automatically
@@ -61,6 +61,13 @@ if `docker run` is used.
 Then you can just run `python3 main.py` and it will output the results to the `data/json/` directory.
 
 A crontab will have to be set up if you want to automate the scripts.
+
+### pick_war_players.py
+
+A new python script was added, which depends on the clash.json file generationed by `main.py`.
+When this script runs (at midnight, every day) it will create another file `war_picks.json` with 10/15/20/25 players to
+participate in the next war. These players are determined based on if they have participated recently, if they are new
+to the clan, and have good war performance.
 
 ## Notes
 

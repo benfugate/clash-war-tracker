@@ -18,21 +18,19 @@
         echo '<td>' . 'Rating Score' . '</td>';
         echo '</tr>';
         foreach($array as $key => $item) {
-            if ($item['in_clan']) {
+            $player_score = $item['player_score'];
+            $average_stars = $item['time_filtered_average_stars'];
 
-                $player_score = $item['player_score'];
-                $average_stars = $item['time_filtered_average_stars'];
-
-                echo '<tr>';
-                    echo '<td>' . $item['town_hall'] . '</td>';
-                    echo '<td>' . $item['name'] . '</td>';
-                    echo '<td>' . round(($item['misses']/$item['total'])*100) . '%</td>';
-                    echo '<td>' . $average_stars . '</td>';
-                    echo '<td>' . $player_score . '</td>';
-                echo '</tr>';
-            }
+            echo '<tr>';
+                echo '<td>' . $item['town_hall'] . '</td>';
+                echo '<td>' . $item['name'] . '</td>';
+                echo '<td>' . round(($item['misses']/$item['total'])*100) . '%</td>';
+                echo '<td>' . $average_stars . '</td>';
+                echo '<td>' . $player_score . '</td>';
+            echo '</tr>';
         }
         echo '</table>';
+        echo 'Rating Score of -1 indicates new clan member<br>';
         echo basename($filename) . " was last updated: " . date ("F d Y H:i:s.", filemtime($filename));
     ?>
     </center>

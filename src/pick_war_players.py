@@ -12,6 +12,7 @@ one_month_in_seconds = 2592000
 def main():
 
     loop = asyncio.get_event_loop()
+    client = coc.login(config.username, config.password)
 
     if (config.username is None) or (config.password is None) or (config.clan_tag is None):
         raise ValueError('Missing at least one config variable')
@@ -20,6 +21,18 @@ def main():
         clash = json.load(file)
 
     war_picks = {}
+    clan = loop.run_until_complete(client.get_clan(config.clan_tag))
+    members = clan.members
+    for member in members:
+        if member.tag not in clash:
+            player = loop.run_until_complete(client.get_player(member.tag))
+            if player.war_opted_in:
+                war_picks[member.tag] = {
+                    "name": member.name,
+                    "player_score": -1,
+                    "town_hall": player.town_hall
+                }
+
     for tag in clash:
         if clash[tag]["in_clan"]:
             miss_percentage = (clash[tag]["misses"] / clash[tag]["total"]) * 100
@@ -37,7 +50,6 @@ def main():
 
             if miss_percentage < 50 or no_recent_war:
                 try:
-                    client = coc.login(config.username, config.password)
                     player = loop.run_until_complete(client.get_player(tag))
                     if not player.war_opted_in:
                         continue
@@ -54,6 +66,8 @@ def main():
         most_recent_player = ""
 
         for tag in clash:
+            if clash[tag]["player_score"] == -1:
+                continue
             if clash[tag]["most_recent_war"] > most_recent_attack:
                 most_recent_attack = clash[tag]["most_recent_war"]
                 most_recent_player = tag
