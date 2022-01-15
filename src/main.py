@@ -186,6 +186,9 @@ def main():
     with open(config.war_log_json, 'w', encoding='utf-8') as f:
         json.dump(opponents, f, ensure_ascii=False, indent=4)
 
+    if output_filename == config.clash_json:
+        os.system(f"python3 {sys.path[0]}/pick_war_players.py")
+
 
 try:
     main()

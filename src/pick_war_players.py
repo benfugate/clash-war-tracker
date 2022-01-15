@@ -27,7 +27,7 @@ def main():
     for member in members:
         player = loop.run_until_complete(client.get_player(member.tag))
         if member.tag not in clash:
-            if player.war_opted_in:
+            if player.war_opted_in and player.town_hall > 6:
                 war_picks[member.tag] = {
                     "name": member.name,
                     "player_score": -1,
@@ -48,6 +48,8 @@ def main():
             elif miss_percentage == 100 and clash[tag]["total"] > 4:
                 continue
             elif clash[tag]["league"] == "Unranked":
+                continue
+            elif clash[tag]["town_hall"] < 7:
                 continue
 
             most_recent_war = 0
@@ -83,6 +85,9 @@ def main():
                     most_recent_player = tag
 
         del clash[most_recent_player]
+
+    for tag in clash:
+        print(clash[tag]["name"])
 
     with open(config.war_picks, 'w', encoding='utf-8') as f:
         json.dump(clash, f, ensure_ascii=False, indent=4)
