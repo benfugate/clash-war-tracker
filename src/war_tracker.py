@@ -2,16 +2,19 @@ import os
 import shutil
 import sys
 import time
+import re
 import coc
 import json
 import asyncio
 import traceback
+
 from config import Config
+import pick_war_players as pwp
 
 config = Config()
 
 
-def main():
+def war_tracker():
 
     loop = asyncio.get_event_loop()
 
@@ -74,8 +77,8 @@ def main():
     war_info = {}
     for member in war.clan.members:
         war_player = {
-            "name": member.name.replace(" ", "_"), "tag": member.tag,
-            "town_hall": member.town_hall, "missed_attacks": 2,
+            "name": re.sub(r'[^\w_]', '', member.name.replace(" ", "_")),
+            "tag": member.tag, "town_hall": member.town_hall, "missed_attacks": 2,
             "attack_info": {
                 "attacks": {
                     "first_attack": {"stars": None, "destruction": None},
@@ -187,11 +190,11 @@ def main():
         json.dump(opponents, f, ensure_ascii=False, indent=4)
 
     if output_filename == config.clash_json:
-        os.system(f"python3 {sys.path[0]}/pick_war_players.py")
+        pwp.pick_war_players()
 
 
 try:
-    main()
+    war_tracker()
 except Exception as e:
     errors_dir = f'{config.storage_folders}/errors/'
     if not os.path.exists(errors_dir):
