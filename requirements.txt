@@ -1,2 +1,2 @@
-aiohttp
-coc.py
+aiohttp==3.8.1
+coc.py==2.0.0
