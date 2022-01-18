@@ -1,5 +1,6 @@
 import time
 import coc
+import re
 import json
 import asyncio
 from config import Config
@@ -9,7 +10,7 @@ config = Config()
 one_month_in_seconds = 2592000
 
 
-def main():
+def pick_war_players():
 
     loop = asyncio.get_event_loop()
     client = coc.login(config.username, config.password)
@@ -29,7 +30,7 @@ def main():
         if member.tag not in clash:
             if player.war_opted_in and player.town_hall > 6:
                 war_picks[member.tag] = {
-                    "name": member.name,
+                    "name": re.sub(r'[^\w_]', '', member.name.replace(" ", "_")),
                     "player_score": -1,
                     "trophies": member.trophies,
                     "town_hall": player.town_hall,
@@ -93,7 +94,8 @@ def main():
         json.dump(clash, f, ensure_ascii=False, indent=4)
 
 
-try:
-    main()
-except Exception as e:
-    print(e)
+if __name__ == "main":
+    try:
+        pick_war_players()
+    except Exception as e:
+        print(e)
