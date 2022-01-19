@@ -1,6 +1,26 @@
 <html>
 <head>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        @media screen and (min-width: 600px) {
+            table {
+                width: 100%;
+            }
+            td {
+                font-size: 26px;
+                padding: 5px;
+            }
+        }
+        @media screen and (min-width: 1280px) {
+            table {
+                width: 30%;
+            }
+            td {
+                font-size: 16px;
+                padding: 0px;
+            }
+        }
+    </style>
 </head>
 <body>
     <center>
@@ -11,18 +31,22 @@
             [$b['trophies']] <=> [$a['trophies']]
         );
         echo '<table cellpadding="1" cellspacing="1" border="1">';
-        echo '<td>' . '' . '</td>';
+        echo '<td>' . '#' . '</td>';
         echo '<td>' . 'TH' . '</td>';
         echo '<td>' . 'Name' . '</td>';
-        echo '<td>' . 'Percentage Missed' . '</td>';
-        echo '<td>' . 'Average Stars' . '</td>';
-        echo '<td>' . 'Rating Score' . '</td>';
+        echo '<td>' . 'Percentage<br>Missed' . '</td>';
+        echo '<td>' . 'Average<br>Stars' . '</td>';
+        echo '<td>' . 'Rating<br>Score' . '</td>';
+        echo '<td>' . 'Last War' . '</td>';
         echo '</tr>';
         $index = 1;
         foreach($array as $key => $item) {
             if ($item['in_war']) {
 
                 $player_score = $item['player_score'];
+                $last_war = $item['most_recent_war'];
+                $last_war = new DateTime("@$last_war");
+                $last_war = $last_war->format('m-d-Y');
                 $average_stars = "";
                 if (!is_null($item['time_filtered_average_stars']))
                     $average_stars = $item['time_filtered_average_stars'];
@@ -38,6 +62,7 @@
                     echo '<td>' . round(($item['misses']/$item['total'])*100) . '%</td>';
                     echo '<td>' . $average_stars . '</td>';
                     echo '<td>' . $player_score . '</td>';
+                    echo '<td>' . $last_war . '</td>';
                 echo '</tr>';
                 $index++;
             }
@@ -49,6 +74,9 @@
             if (!$item['in_war']) {
 
                 $player_score = $item['player_score'];
+                $last_war = $item['most_recent_war'];
+                $last_war = new DateTime("@$last_war");
+                $last_war = $last_war->format('m-d-Y');
                 $average_stars = "";
                 if (!is_null($item['time_filtered_average_stars']))
                     $average_stars = $item['time_filtered_average_stars'];
@@ -64,6 +92,7 @@
                     echo '<td>' . round(($item['misses']/$item['total'])*100) . '%</td>';
                     echo '<td>' . $average_stars . '</td>';
                     echo '<td>' . $player_score . '</td>';
+                    echo '<td>' . $last_war . '</td>';
                 echo '</tr>';
                 $index++;
             }
