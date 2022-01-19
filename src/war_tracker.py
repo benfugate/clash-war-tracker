@@ -114,26 +114,24 @@ def war_tracker():
     for tag in war_info:
         if war_info[tag]["tag"] in clash:
             tag = war_info[tag]["tag"]
-            clash[tag]["name"] = war_info[tag]["name"]
             clash[tag]["misses"] += war_info[tag]["missed_attacks"]
             clash[tag]["total"] += 2
-            if "wars" not in clash[tag]:
-                clash[tag]["wars"] = []
             if war_info[tag]["attack_info"]["attacks"]:
                 clash[tag]["wars"].append(war_info[tag]["attack_info"])
-            clash[tag]["in_clan"] = True
-            clash[tag]["town_hall"] = war_info[tag]["town_hall"]
         else:
             tag = war_info[tag]["tag"]
             clash[tag] = {}
-            clash[tag]["name"] = war_info[tag]["name"]
             clash[tag]["misses"] = war_info[tag]["missed_attacks"]
             clash[tag]["total"] = 2
             clash[tag]["wars"] = []
             if war_info[tag]["attack_info"]["attacks"]:
                 clash[tag]["wars"] = [war_info[tag]["attack_info"]]
-            clash[tag]["in_clan"] = True
-            clash[tag]["town_hall"] = war_info[tag]["town_hall"]
+
+        clash[tag]["name"] = war_info[tag]["name"]
+        clash[tag]["in_clan"] = True
+        clash[tag]["town_hall"] = war_info[tag]["town_hall"]
+        clash[tag]["most_recent_war"] = int(time.time())
+
         if war.is_cwl:
             clash[tag]["total"] -= 1
             clash[tag]["misses"] -= 1

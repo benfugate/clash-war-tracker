@@ -44,7 +44,7 @@
             }
         }
         echo '</table>';
-        echo "* filtered data is empty, using player lifetime values<br>";
+        echo "* filtered data is empty, no recent attacks. Using player lifetime values<br>";
         echo basename($filename) . " was last updated: " . date ("F d Y H:i:s.", filemtime($filename));
         echo "<br><a href='war_picks.php'>Click here to view current war member suggestions</a>";
     ?>

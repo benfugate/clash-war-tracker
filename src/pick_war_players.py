@@ -56,10 +56,13 @@ def pick_war_players():
                 continue
 
             most_recent_war = 0
-            for war in clash[tag]["wars"]:
-                if war["timestamp"] > most_recent_war:
-                    most_recent_war = war["timestamp"]
-            clash[tag]["most_recent_war"] = most_recent_war
+            if "most_recent_war" in clash[tag]:
+                most_recent_war = clash[tag]["most_recent_war"]
+            else:
+                for war in clash[tag]["wars"]:
+                    if war["timestamp"] > most_recent_war:
+                        most_recent_war = war["timestamp"]
+                clash[tag]["most_recent_war"] = most_recent_war
             no_recent_war = False
             if most_recent_war < int(time.time()) - one_month_in_seconds:
                 no_recent_war = True
@@ -75,8 +78,7 @@ def pick_war_players():
         # Remove the player with the highest percentage of missed attacks, regardless of last participation
         highest_miss_percentage = 0
         for tag in clash:
-            if clash[tag]["player_score"] == -1:
-                print(clash[tag]["name"])
+            if not clash[tag]["in_war"] or clash[tag]["player_score"] == -1:
                 continue
             miss_percentage = (clash[tag]["misses"] / clash[tag]["total"]) * 100
             if miss_percentage > 70 and miss_percentage > highest_miss_percentage:
@@ -87,7 +89,7 @@ def pick_war_players():
         if not player_to_remove:
             most_recent_attack = 0
             for tag in clash:
-                if clash[tag]["player_score"] == -1:
+                if not clash[tag]["in_war"] or clash[tag]["player_score"] == -1:
                     continue
                 elif clash[tag]["most_recent_war"] > most_recent_attack:
                     most_recent_attack = clash[tag]["most_recent_war"]

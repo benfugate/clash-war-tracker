@@ -71,6 +71,7 @@
         echo '</table>';
 
         echo 'Rating Score of -1 indicates new clan member<br>';
+        echo "* filtered data is empty, no recent attacks. Using player lifetime values<br>";
         echo basename($filename) . " was last updated: " . date ("F d Y H:i:s.", filemtime($filename));
         echo "<br><a href='index.php'>Click here to go to the homepage</a>";
     ?>
