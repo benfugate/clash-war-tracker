@@ -8,7 +8,7 @@
         $filename = "/clash-tracker/data/json/war_picks.json";
         $array = json_decode(file_get_contents($filename), true);
         uasort($array, fn($a, $b) =>
-            [$b['town_hall'], $b['trophies']] <=> [$a['town_hall'], $a['trophies']]
+            [$b['trophies']] <=> [$a['trophies']]
         );
         echo '<table cellpadding="1" cellspacing="1" border="1">';
         echo '<td>' . 'TH' . '</td>';
@@ -18,8 +18,15 @@
         echo '<td>' . 'Rating Score' . '</td>';
         echo '</tr>';
         foreach($array as $key => $item) {
+
             $player_score = $item['player_score'];
-            $average_stars = $item['time_filtered_average_stars'];
+            $average_stars = "";
+            if (!is_null($item['time_filtered_average_stars']))
+                $average_stars = $item['time_filtered_average_stars'];
+            elseif (!is_null($item['average_stars'])) {
+                $average_stars = $item['average_stars'] . "*";
+                $player_score = $player_score . "*";
+            }
 
             echo '<tr>';
                 echo '<td>' . $item['town_hall'] . '</td>';
