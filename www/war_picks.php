@@ -44,9 +44,12 @@
             if ($item['in_war']) {
 
                 $player_score = $item['player_score'];
-                $last_war = $item['most_recent_war'];
-                $last_war = new DateTime("@$last_war");
-                $last_war = $last_war->format('m-d-Y');
+                $last_war = "";
+                if ($item['most_recent_war']) {
+                    $last_war = $item['most_recent_war'];
+                    $last_war = new DateTime("@$last_war");
+                    $last_war = $last_war->format('m-d-Y');
+                }
                 $average_stars = "";
                 if (!is_null($item['time_filtered_average_stars']))
                     $average_stars = $item['time_filtered_average_stars'];
@@ -74,9 +77,12 @@
             if (!$item['in_war']) {
 
                 $player_score = $item['player_score'];
-                $last_war = $item['most_recent_war'];
-                $last_war = new DateTime("@$last_war");
-                $last_war = $last_war->format('m-d-Y');
+                $last_war = "";
+                if ($item['most_recent_war']) {
+                    $last_war = $item['most_recent_war'];
+                    $last_war = new DateTime("@$last_war");
+                    $last_war = $last_war->format('m-d-Y');
+                }
                 $average_stars = "";
                 if (!is_null($item['time_filtered_average_stars']))
                     $average_stars = $item['time_filtered_average_stars'];
