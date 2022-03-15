@@ -12,9 +12,15 @@
         else
             $filename = "/clash-tracker/data/json/clash.json";
         $array = json_decode(file_get_contents($filename), true);
+
+        # Subsort code, sorts by town hall and then by th trophies.
+        #uasort($array, fn($a, $b) =>
+        #    [$b['town_hall'], $b['trophies']] <=> [$a['town_hall'], $a['trophies']]
+        #);
         uasort($array, fn($a, $b) =>
-            [$b['town_hall'], $b['trophies']] <=> [$a['town_hall'], $a['trophies']]
+            $b['trophies'] <=> $a['trophies']
         );
+
         echo '<table cellpadding="1" cellspacing="1" border="1">';
         echo '<td>' . 'TH' . '</td>';
         echo '<td>' . 'Name' . '</td>';
