@@ -25,6 +25,7 @@
 <body>
     <center>
     <?php
+        echo "<a href='index.php'>Click here to see clan war stats</a>";
         $filename = "/clash-tracker/data/json/war_picks.json";
         $array = json_decode(file_get_contents($filename), true);
         uasort($array, fn($a, $b) =>
@@ -108,7 +109,6 @@
         echo 'Rating Score of -1 indicates new clan member<br>';
         echo "* filtered data is empty, no recent attacks. Using player lifetime values<br>";
         echo basename($filename) . " was last updated: " . date ("F d Y H:i:s.", filemtime($filename));
-        echo "<br><a href='index.php'>Click here to go to the homepage</a>";
     ?>
     </center>
 </body>

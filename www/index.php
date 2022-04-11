@@ -5,9 +5,10 @@
 <body>
     <center>
     <?php
+        echo "<a href='war_picks.php'>Click here for war picks</a>";
         if (file_exists("/clash-tracker/data/json/current_war.json")) {
             $filename = "/clash-tracker/data/json/current_war.json";
-            print_r("This page includes an ongoing war. Data may be incomplete.");
+            echo "<br>This page includes an ongoing war. Data may be incomplete.<br>";
         }
         else
             $filename = "/clash-tracker/data/json/clash.json";
@@ -52,7 +53,6 @@
         echo '</table>';
         echo "* filtered data is empty, no recent attacks. Using player lifetime values<br>";
         echo basename($filename) . " was last updated: " . date ("F d Y H:i:s.", filemtime($filename));
-        echo "<br><a href='war_picks.php'>Click here to view current war member suggestions</a>";
     ?>
     </center>
 </body>

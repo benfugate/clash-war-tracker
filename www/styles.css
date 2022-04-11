@@ -54,7 +54,7 @@ aside,
 	}
 }
 
-/* if the browser window is at least 1000px-s wide: */
+/* MOBILE */
 @media screen and (min-width: 600px) {
     table {
     width: 100%;}
@@ -62,13 +62,24 @@ aside,
         font-size: 36px;
         padding: 10px;
     }
+    a {
+        display:inline-block;
+        font-size: 60px;
+        color: white;
+        padding: 20px 0px 50px;
+    }
 }
-/* if the browser window is at least 1000px-s wide: */
+/* DESKTOP */
 @media screen and (min-width: 1280px) {
     table {
     width: 30%;}
     td {
         font-size: 16px;
+        padding: 0px;
+    }
+    a {
+        display:inline-block;
+        font-size: 18px;
         padding: 0px;
     }
 }
