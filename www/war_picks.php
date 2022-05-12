@@ -109,6 +109,11 @@
         echo 'Rating Score of -1 indicates new clan member<br>';
         echo "* filtered data is empty, no recent attacks. Using player lifetime values<br>";
         echo basename($filename) . " was last updated: " . date ("F d Y H:i:s.", filemtime($filename));
+        echo '<form name="update" method="post"><button name = "update" type="submit">Update page</button></form>';
+        if (isset($_POST['update'])) {
+            exec('/usr/bin/python3 /clash-tracker/src/get_active_players.py');
+            header("Refresh:0");
+        }
     ?>
     </center>
 </body>
