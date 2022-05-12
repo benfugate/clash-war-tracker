@@ -1,0 +1,31 @@
+<html>
+<head>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <center>
+        <a href='war_picks.php'>Click here for war picks</a>
+        <br>
+
+        <table cellpadding="1" cellspacing="1" border="1">
+        <td>TH</td>
+        <td>Name</td>
+        <td>Percentage Missed</td>
+        <td>Average Stars</td>
+        <td>Rating Score</td>
+        </tr>
+        {% for member in data%}
+        <tr>
+        {% for value in member%}
+        <td>{value}</td>'
+        {% endfor %}
+        </tr>
+        {% endfor %}
+        </table>'
+        * filtered data is empty, no recent attacks. Using player lifetime values
+        <br>
+        ###echo basename($filename) . " was last updated: " . date ("F d Y H:i:s.", filemtime($filename))
+    ?>
+    </center>
+</body>
+</html>
