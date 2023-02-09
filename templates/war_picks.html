@@ -1,0 +1,64 @@
+<html>
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        @media screen and (min-width: 600px) {
+            table {
+                width: 100%;
+            }
+            td {
+                font-size: 26px;
+                padding: 5px;
+            }
+        }
+        @media screen and (min-width: 1280px) {
+            table {
+                width: 30%;
+            }
+            td {
+                font-size: 16px;
+                padding: 0px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <center>
+        <table cellpadding="1" cellspacing="1" border="1">
+        <tr>
+            <td>#</td>
+            <td>TH</td>
+            <td>Name</td>
+            <td>Percentage<br>Missed</td>
+            <td>Average<br>Stars</td>
+            <td>Rating<br>Score</td>
+            <td>Last War</td>
+        </tr>
+        {% for member in in_war%}
+        <tr>
+        {% for value in member%}
+        <td>{{value}}</td>
+        {% endfor %}
+        </tr>
+        {% endfor %}
+        </table>
+        <p>Excess players filtered out of war</p>
+        <table cellpadding="1" cellspacing="1" border="1">
+        {% for member in not_in_war%}
+        <tr>
+        {% for value in member%}
+        <td>{{value}}</td>
+        {% endfor %}
+        </tr>
+        {% endfor %}
+        </table>
+
+        Rating Score of -1 indicates new clan member
+        <br>
+        * filtered data is empty, no recent attacks. Using player lifetime values
+        <br>
+        echo basename($filename) . " was last updated: " . date ("F d Y H:i:s.", filemtime($filename))
+        <form name="update" method="post"><button name = "update" type="submit">Update page</button></form>
+    </center>
+</body>
+</html>
