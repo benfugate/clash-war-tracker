@@ -1,6 +1,6 @@
 <html>
 <head>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/styles.css') }}">
     <style>
         @media screen and (min-width: 600px) {
             table {
@@ -24,6 +24,7 @@
 </head>
 <body>
     <center>
+        <a href='/'>Click here to see clan war stats</a>
         <table cellpadding="1" cellspacing="1" border="1">
         <tr>
             <td>#</td>
@@ -36,29 +37,27 @@
         </tr>
         {% for member in in_war%}
         <tr>
-        {% for value in member%}
-        <td>{{value}}</td>
-        {% endfor %}
+            {% for value in member%}
+            <td>{{ value }}</td>
+            {% endfor %}
         </tr>
         {% endfor %}
         </table>
         <p>Excess players filtered out of war</p>
         <table cellpadding="1" cellspacing="1" border="1">
         {% for member in not_in_war%}
-        <tr>
-        {% for value in member%}
-        <td>{{value}}</td>
-        {% endfor %}
-        </tr>
+            <tr>
+            {% for value in member%}
+                <td>{{ value }}</td>
+            {% endfor %}
+            </tr>
         {% endfor %}
         </table>
 
-        Rating Score of -1 indicates new clan member
-        <br>
-        * filtered data is empty, no recent attacks. Using player lifetime values
-        <br>
-        echo basename($filename) . " was last updated: " . date ("F d Y H:i:s.", filemtime($filename))
-        <form name="update" method="post"><button name = "update" type="submit">Update page</button></form>
+        <p>Rating Score of -1 indicates new clan member</p>
+        <p>* filtered data is empty, no recent attacks. Using player lifetime values</p>
+        <p>war_picks.json was last updated: {{ last_modified }}</p>
+        <form method="post"><button name="update" value="update" type="submit">Update page</button></form>
     </center>
 </body>
 </html>

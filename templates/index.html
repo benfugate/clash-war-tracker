@@ -1,6 +1,6 @@
 <html>
 <head>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/styles.css') }}">
 </head>
 <body>
     <center>
@@ -9,23 +9,24 @@
 
         <table cellpadding="1" cellspacing="1" border="1">
         <tr>
-        <td>TH</td>
-        <td>Name</td>
-        <td>Percentage Missed</td>
-        <td>Average Stars</td>
-        <td>Rating Score</td>
+            <td>TH</td>
+            <td>Name</td>
+            <td>Percentage<br>Missed</td>
+            <td>Average<br>Stars</td>
+            <td>Rating<br>Score</td>
         </tr>
+
         {% for member in data%}
         <tr>
-        {% for value in member%}
-        <td>{{value}}</td>
-        {% endfor %}
+            {% for value in member%}
+            <td>{{ value }}</td>
+            {% endfor %}
         </tr>
         {% endfor %}
+
         </table>
-        * filtered data is empty, no recent attacks. Using player lifetime values
-        <br>
-        <!-- echo basename($filename) . " was last updated: " . date ("F d Y H:i:s.", filemtime($filename)) -->
+        <p>* filtered data is empty, no recent attacks. Using player lifetime values</p>
+        <p>{{ load_file }} was last updated: {{ last_modified }}</p>
     </center>
 </body>
 </html>
