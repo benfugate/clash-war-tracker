@@ -5,7 +5,6 @@ import json
 import asyncio
 from config import Config
 
-
 config = Config()
 one_month_in_seconds = 2592000
 
