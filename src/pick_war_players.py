@@ -71,34 +71,35 @@ def pick_war_players():
 
     clash = war_picks
 
-    for i in range(len(clash) % 5):
-        player_to_remove = ""
+    if len(clash) > 10:  # If we didn't even have 10 war picks, just show all the picks.
+        for i in range(len(clash) % 5):
+            player_to_remove = ""
 
-        # Remove the player with the highest percentage of missed attacks, regardless of last participation
-        highest_miss_percentage = 0
-        for tag in clash:
-            if not clash[tag]["in_war"] or clash[tag]["player_score"] == -1:
-                continue
-            miss_percentage = (clash[tag]["misses"] / clash[tag]["total"]) * 100
-            if miss_percentage > 70 and miss_percentage > highest_miss_percentage:
-                highest_miss_percentage = miss_percentage
-                player_to_remove = tag
-
-        # If nobody is over 70%, remove player that was in the most recent war
-        if not player_to_remove:
-            most_recent_attack = 0
+            # Remove the player with the highest percentage of missed attacks, regardless of last participation
+            highest_miss_percentage = 0
             for tag in clash:
                 if not clash[tag]["in_war"] or clash[tag]["player_score"] == -1:
                     continue
-                elif clash[tag]["most_recent_war"] > most_recent_attack:
-                    most_recent_attack = clash[tag]["most_recent_war"]
+                miss_percentage = (clash[tag]["misses"] / clash[tag]["total"]) * 100
+                if miss_percentage > 70 and miss_percentage > highest_miss_percentage:
+                    highest_miss_percentage = miss_percentage
                     player_to_remove = tag
-                elif clash[tag]["most_recent_war"] == most_recent_attack:
-                    if clash[tag]["player_score"] < clash[player_to_remove]["player_score"]:
+
+            # If nobody is over 70%, remove player that was in the most recent war
+            if not player_to_remove:
+                most_recent_attack = 0
+                for tag in clash:
+                    if not clash[tag]["in_war"] or clash[tag]["player_score"] == -1:
+                        continue
+                    elif clash[tag]["most_recent_war"] > most_recent_attack:
                         most_recent_attack = clash[tag]["most_recent_war"]
                         player_to_remove = tag
+                    elif clash[tag]["most_recent_war"] == most_recent_attack:
+                        if clash[tag]["player_score"] < clash[player_to_remove]["player_score"]:
+                            most_recent_attack = clash[tag]["most_recent_war"]
+                            player_to_remove = tag
 
-        clash[player_to_remove]["in_war"] = False
+            clash[player_to_remove]["in_war"] = False
 
     with open(config.war_picks, 'w', encoding='utf-8') as f:
         json.dump(clash, f, ensure_ascii=False, indent=4)
