@@ -12,7 +12,8 @@ one_month_in_seconds = 2592000
 def pick_war_players():
 
     loop = asyncio.get_event_loop()
-    client = coc.login(config.username, config.password)
+    client = coc.Client(key_names="clash-war-tracker", key_count=1)
+    loop.run_until_complete(client.login(config.username, config.password))
 
     if (config.username is None) or (config.password is None) or (config.clan_tag is None):
         raise ValueError('Missing at least one config variable')
