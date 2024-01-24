@@ -22,7 +22,8 @@ def war_tracker():
         raise ValueError('Missing at least one config variable')
 
     try:
-        client = coc.login(config.username, config.password)
+        client = coc.Client(key_names="clash-war-tracker", key_count=1)
+        loop.run_until_complete(client.login(config.username, config.password))
         war = loop.run_until_complete(client.get_current_war(config.clan_tag))
     except Exception as e:
         print(f"API Error: {e}")

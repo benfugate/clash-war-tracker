@@ -11,7 +11,8 @@ if not (config.username or config.password or config.clan_tag):
     raise ValueError('Missing at least one config variable')
 
 loop = asyncio.get_event_loop()
-client = coc.login(config.username, config.password)
+client = coc.Client(key_names="clash-war-tracker", key_count=1)
+loop.run_until_complete(client.login(config.username, config.password))
 clan = loop.run_until_complete(client.get_clan(config.clan_tag))
 members = clan.members
 
