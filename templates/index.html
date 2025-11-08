@@ -1,32 +1,66 @@
-<html>
+<!doctype html>
+<html lang="en">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Clash War Tracker - Clan War Stats</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/styles.css') }}">
 </head>
-<body>
-    <center>
-        <a href='war_picks'>Click here for war picks</a>
-        <br>
+<body class="bg-dark text-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary">
+  <div class="container">
+    <a class="navbar-brand fw-semibold" href="/">Clash War Tracker</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('war_picks') }}">War Picks</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
-        <table cellpadding="1" cellspacing="1" border="1">
-        <tr>
-            <td>TH</td>
-            <td>Name</td>
-            <td>Percentage<br>Missed</td>
-            <td>Average<br>Stars</td>
-            <td>Rating<br>Score</td>
-        </tr>
+<main class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h3 mb-0">Clan War Stats</h1>
+    <span class="badge text-bg-secondary">{{ load_file }}</span>
+  </div>
+  <p class="text-muted small mb-4">Last updated: {{ last_modified }}</p>
 
-        {% for member in data%}
-        <tr>
-            {% for value in member%}
-            <td>{{ value }}</td>
-            {% endfor %}
-        </tr>
-        {% endfor %}
-
+  <div class="card bg-dark border-secondary shadow-sm">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-dark table-striped table-hover table-bordered align-middle mb-0">
+          <thead class="table-secondary text-dark">
+            <tr>
+              <th scope="col">TH</th>
+              <th scope="col">Name</th>
+              <th scope="col">% Missed</th>
+              <th scope="col">Avg Stars</th>
+              <th scope="col">Rating</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for member in data %}
+            <tr>
+              {% for value in member %}
+                <td>{{ value }}</td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+          </tbody>
         </table>
-        <p>* filtered data is empty, no recent attacks. Using player lifetime values</p>
-        <p>{{ load_file }} was last updated: {{ last_modified }}</p>
-    </center>
+      </div>
+    </div>
+  </div>
+
+  <p class="mt-3 text-muted small">* Filtered data is empty (no recent attacks). Using player lifetime values.</p>
+</main>
+
+<script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 </body>
 </html>
