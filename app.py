@@ -88,5 +88,25 @@ def war_picks():
     return render_template('war_picks.html', in_war=in_war, not_in_war=not_in_war, last_modified=modify_time)
 
 
+@app.route('/raids', methods=['GET'])
+def raids():
+    with open(clash_file) as f:
+        clash = json.load(f)
+        modify_time = datetime.fromtimestamp(os.path.getmtime(clash_file)).strftime('%c')
+
+    output = []
+    for member_tag, member_data in clash.items():
+        if 'raids' in member_data and len(member_data['raids']) > 0:
+            output.append({
+                'name': member_data.get('name', 'N/A'),
+                'town_hall': member_data.get('town_hall', 'N/A'),
+                'average_raid_loot': member_data.get('average_raid_loot', 0)
+            })
+
+    output = sorted(output, key=lambda x: x['average_raid_loot'], reverse=True)
+
+    return render_template('raids.html', players=output, last_modified=modify_time)
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=False)
