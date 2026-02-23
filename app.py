@@ -14,6 +14,10 @@ current_war_file = f"{cd}/data/json/current_war.json"
 war_picks_file = f"{cd}/data/json/war_picks.json"
 last_refresh_time = datetime.now() - timedelta(minutes=20)
 
+# Very small in-memory rate limit for the public "Update page" button on /war_picks.
+# Resets on container restart (intentionally simple).
+_war_picks_refresh_times = []  # list[datetime]
+
 
 def load_member_info(member, order):
     member_info = {"trophies": member["trophies"] if "trophies" in member else 0,
@@ -57,10 +61,25 @@ def war_picks():
     global last_refresh_time
     if request.method == 'POST':
         if request.form.get('update') == 'update':
-            if datetime.now() - timedelta(minutes=20) > last_refresh_time:
-                last_refresh_time = datetime.now()
-                subprocess.run(["python3", "/clash-tracker/src/get_active_players.py"])
+            now = datetime.now()
+
+            # Rolling window: max 2 refreshes per 24h
+            cutoff = now - timedelta(hours=24)
+            global _war_picks_refresh_times
+            _war_picks_refresh_times = [t for t in _war_picks_refresh_times if t >= cutoff]
+
+            # Must be at least 10 minutes apart
+            if _war_picks_refresh_times and now - _war_picks_refresh_times[-1] < timedelta(minutes=10):
                 return redirect("/war_picks")
+
+            if len(_war_picks_refresh_times) >= 2:
+                return redirect("/war_picks")
+
+            # Allowed: run the refresh
+            last_refresh_time = now
+            subprocess.run(["python3", "/clash-tracker/src/get_active_players.py"])
+            _war_picks_refresh_times.append(now)
+            return redirect("/war_picks")
     in_war = []
     not_in_war = []
     order = ["trophies", "town_hall", "name", "percentage_missed", "average_stars", "player_score", "most_recent_war"]
