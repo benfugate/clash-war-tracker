@@ -1,3 +1,5 @@
 aiohttp
 coc.py
 flask
+orjson
+zstandard
